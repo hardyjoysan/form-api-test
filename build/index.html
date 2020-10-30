@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="en">
+    
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <link rel="icon" href="img/favicon.png">
+        <title>Boilerplate - Gulp & Bootstrap 4</title>
+        <link rel="canonical" href="#">
+        <link href="css/style.css" rel="stylesheet">
+    </head>
+    
+    <body>
+        <div class="base-header p-3 px-md-4 mb-3 bg-white border-bottom box-shadow">
+            <div class="container d-flex flex-column flex-md-row align-items-center">
+                 <h5 class="my-0 mr-md-auto font-weight-normal">Tranxactor i-Cash</h5>
+
+                <!-- <nav class="my-2 my-md-0 mr-md-3">
+          <a class="p-2 text-dark" href="#">Features</a>
+          <a class="p-2 text-dark" href="#">Enterprise</a>
+          <a class="p-2 text-dark" href="#">Support</a>
+          <a class="p-2 text-dark" href="#">Pricing</a>
+        </nav>
+        <a class="btn btn-outline-primary" href="#">Sign up</a> -->
+            </div>
+        </div>
+        <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
+            <div class="container">
+                <!-- Login API Test -->
+                <div class="row">
+                    <div class="col-md-12">
+                         <h3>Login API</h3>
+
+                    </div>
+                    <div class="col-md-6 p-lg-6">
+                        <form id="api-login">
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" class="form-control" name="username"
+                                required>
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" name="password"
+                                required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6 p-lg-6"> <code id="login_result" class="pt-2"></code>
+
+                    </div>
+                </div>
+                <script>
+                    const loginform = document.getElementById("api-login");
+                      loginform.addEventListener("submit", function(e) {
+                        e.preventDefault();
+                    
+                        document.getElementById('login_result').innerHTML = "";
+                    
+                        const formData = new FormData(loginform);
+                    
+                        const data = {
+                          username: formData.get('username'),
+                          password: formData.get('password')
+                        };
+                    
+                        fetch('https://icash-uat.txweb.site/auth/token', {
+                          method: 'POST',
+                          headers: {
+                            'Content-Type': 'application/json',
+                            'moduleCode' : 'TPP_PGP'
+                          },
+                          body: JSON.stringify(data),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                          for(let k in data) {
+                            document.getElementById('login_result').innerHTML += k+":"+data[k]+"<br>";
+                          }
+                        })
+                        .catch((error) => {
+                          console.error('Error:', error);
+                        });
+                    
+                      });
+                </script>
+                <hr />
+                <!-- Balance API Test -->
+                <div class="row">
+                    <div class="col-md-12">
+                         <h3>Balance API</h3>
+
+                    </div>
+                    <div class="col-md-6 p-lg-6">
+                        <form id="api-balance">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="text" class="form-control" name="cardnumber"
+                                required>
+                            </div>
+                            <div class="form-group">
+                                <label>PIN</label>
+                                <input type="text" class="form-control" name="pin" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Authentication Token</label>
+                                <input type="text" class="form-control" name="auth_token"
+                                required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6 p-lg-6"> <code id="balance_result" class="pt-2"></code>
+
+                    </div>
+                </div>
+                <script>
+                    const balanceform = document.getElementById("api-balance");
+                      balanceform.addEventListener("submit", function(e) {
+                        e.preventDefault();
+                    
+                        document.getElementById('balance_result').innerHTML = "";
+                    
+                        const formData = new FormData(balanceform);
+                    
+                        const data = {
+                          cardNumber: formData.get('cardnumber'),
+                          pin: formData.get('pin')
+                        };
+                
+                        console.log(formData.get('auth_token'));
+                    
+                        fetch('https://icash-uat.txweb.site/giftCard/balance', {
+                          method: 'POST',
+                          headers: {
+                            'Authorization': formData.get('auth_token'),
+                            'Content-Type': 'application/json',
+                            'moduleCode' : 'TPP_PGP'
+                          },
+                          body: JSON.stringify(data),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                          for(let k in data) {
+                            document.getElementById('balance_result').innerHTML += k+":"+data[k]+"<br>";
+                          }
+                        })
+                        .catch((error) => {
+                          console.error('Error:', error);
+                        });
+                    
+                      });
+                </script>
+                <hr />
+                <!-- Topup API Test -->
+                <div class="row">
+                    <div class="col-md-12">
+                         <h3>Topup API</h3>
+
+                    </div>
+                    <div class="col-md-6 p-lg-6">
+                        <form id="api-topup">
+                            <div class="form-group">
+                                <label>Card Number</label>
+                                <input type="text" class="form-control" name="cardnumber"
+                                required>
+                            </div>
+                            <div class="form-group">
+                                <label>External Transaction ID</label>
+                                <input type="text" class="form-control"
+                                name="ext_id" required>
+                            </div>
+                            <div class="form-group">
+                                <label>Value</label>
+                                <input type="text" class="form-control" name="topup_value"
+                                required>
+                            </div>
+                            <div class="form-group">
+                                <label>Authentication Token</label>
+                                <input type="text" class="form-control" name="auth_token"
+                                required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Submit</button>
+                        </form>
+                    </div>
+                    <div class="col-md-6 p-lg-6"> <code id="topup_result" class="pt-2"></code>
+
+                    </div>
+                </div>
+                <script>
+                    const topupform = document.getElementById("api-topup");
+                      topupform.addEventListener("submit", function(e) {
+                        e.preventDefault();
+                    
+                        document.getElementById('topup_result').innerHTML = "";
+                    
+                        const formData = new FormData(topupform);
+                    
+                        const data = {
+                          cardNumber: formData.get('cardnumber'),
+                          externalTransactionId: formData.get('ext_id'),
+                          value: formData.get('topup_value'),
+                        };
+                
+                        console.log(formData.get('auth_token'));
+                    
+                        fetch('https://icash-uat.txweb.site/giftCard/topup', {
+                          method: 'POST',
+                          headers: {
+                            'Authorization': formData.get('auth_token'),
+                            'Content-Type': 'application/json',
+                            'moduleCode' : 'TPP_PGP'
+                          },
+                          body: JSON.stringify(data),
+                        })
+                        .then(response => response.json())
+                        .then(data => {
+                          for(let k in data) {
+                            document.getElementById('topup_result').innerHTML += k+":"+data[k]+"<br>";
+                          }
+                        })
+                        .catch((error) => {
+                          console.error('Error:', error);
+                        });
+                    
+                      });
+                </script>
+            </div>
+        </div>
+        <footer class="base-footer">
+            <p>Built with <span>&#x1F49A;</span> in Kerala</p>
+        </footer>
+    </body>
+
+</html>
