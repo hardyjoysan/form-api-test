@@ -1,12 +1,206 @@
 <partial src="header.html"></partial>
 
-<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center">
+<div class="position-relative overflow-hidden p-3 p-md-5 m-md-3">
   <div class="container">
-    <div class="col-md-6 p-lg-6 mx-auto">
-      <h1 class="display-4 font-weight-normal">Here We Are!</h1>
-      <p class="lead font-weight-normal">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      <a class="btn btn-success" href="#">Coming soon</a>
+
+    <!-- Login API Test -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Login API</h3>
+      </div>
+      <div class="col-md-6 p-lg-6">
+        <form id="api-login">
+          <div class="form-group">
+            <label>Username</label>
+            <input type="text" class="form-control" name="username">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control" name="password">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-6 p-lg-6">
+        <code id="login_result" class="pt-2"></code>
+      </div>
     </div>
+
+    <script>
+      const loginform = document.getElementById("api-login");
+      loginform.addEventListener("submit", function(e) {
+        e.preventDefault();
+    
+        document.getElementById('login_result').innerHTML = "";
+    
+        const formData = new FormData(loginform);
+    
+        const data = {
+          username: formData.get('username'),
+          password: formData.get('password')
+        };
+    
+        fetch('https://icash-uat.txweb.site/auth/token', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'moduleCode' : 'TPP_PGP'
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          for(let k in data) {
+            document.getElementById('login_result').innerHTML += k+":"+data[k]+"<br>";
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    
+      });
+    
+    </script>
+
+    <hr />
+    <!-- Balance API Test -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Balance API</h3>
+      </div>
+      <div class="col-md-6 p-lg-6">
+        <form id="api-balance">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" class="form-control" name="cardnumber">
+          </div>
+          <div class="form-group">
+            <label>PIN</label>
+            <input type="text" class="form-control" name="pin">
+          </div>
+          <div class="form-group">
+            <label>Authentication Token</label>
+            <input type="text" class="form-control" name="auth_token">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-6 p-lg-6">
+        <code id="balance_result" class="pt-2"></code>
+      </div>
+    </div>
+
+    <script>
+      const balanceform = document.getElementById("api-balance");
+      balanceform.addEventListener("submit", function(e) {
+        e.preventDefault();
+    
+        document.getElementById('balance_result').innerHTML = "";
+    
+        const formData = new FormData(balanceform);
+    
+        const data = {
+          cardNumber: formData.get('cardnumber'),
+          pin: formData.get('pin')
+        };
+
+        console.log(formData.get('auth_token'));
+    
+        fetch('https://icash-uat.txweb.site/giftCard/balance', {
+          method: 'POST',
+          headers: {
+            'Authorization': formData.get('auth_token'),
+            'Content-Type': 'application/json',
+            'moduleCode' : 'TPP_PGP'
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          for(let k in data) {
+            document.getElementById('balance_result').innerHTML += k+":"+data[k]+"<br>";
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    
+      });
+    
+    </script>
+
+    <hr />
+    <!-- Topup API Test -->
+    <div class="row">
+      <div class="col-md-12">
+        <h3>Topup API</h3>
+      </div>
+      <div class="col-md-6 p-lg-6">
+        <form id="api-topup">
+          <div class="form-group">
+            <label>Card Number</label>
+            <input type="text" class="form-control" name="cardnumber">
+          </div>
+          <div class="form-group">
+            <label>External Transaction ID</label>
+            <input type="text" class="form-control" name="ext_id">
+          </div>
+          <div class="form-group">
+            <label>Value</label>
+            <input type="text" class="form-control" name="topup_value">
+          </div>
+          <div class="form-group">
+            <label>Authentication Token</label>
+            <input type="text" class="form-control" name="auth_token">
+          </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <div class="col-md-6 p-lg-6">
+        <code id="topup_result" class="pt-2"></code>
+      </div>
+    </div>
+
+    <script>
+      const topupform = document.getElementById("api-topup");
+      topupform.addEventListener("submit", function(e) {
+        e.preventDefault();
+    
+        document.getElementById('topup_result').innerHTML = "";
+    
+        const formData = new FormData(topupform);
+    
+        const data = {
+          cardNumber: formData.get('cardnumber'),
+          externalTransactionId: formData.get('ext_id'),
+          value: formData.get('topup_value'),
+        };
+
+        console.log(formData.get('auth_token'));
+    
+        fetch('https://icash-uat.txweb.site/giftCard/topup', {
+          method: 'POST',
+          headers: {
+            'Authorization': formData.get('auth_token'),
+            'Content-Type': 'application/json',
+            'moduleCode' : 'TPP_PGP'
+          },
+          body: JSON.stringify(data),
+        })
+        .then(response => response.json())
+        .then(data => {
+          for(let k in data) {
+            document.getElementById('topup_result').innerHTML += k+":"+data[k]+"<br>";
+          }
+        })
+        .catch((error) => {
+          console.error('Error:', error);
+        });
+    
+      });
+    
+    </script>
+    
   </div>
 </div>
 
